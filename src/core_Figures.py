@@ -195,7 +195,7 @@ def RQ_11_FIGURE(simulation, analytical, p99_values, p99_inf, M_values):
 #  --- How does results translate into calculations for p99 ---
 # ===================================================================================================
 
-def RQ_12_FIGURE(a_tilde_values, p99_vals):
+def RQ_12_FIGURE(a_tilde_values, p99_vals, M):
 
     p99_sim = [item["p99_sim"] for item in p99_vals]
     p99_ana = [item["p99_ana"] for item in p99_vals]
@@ -207,7 +207,7 @@ def RQ_12_FIGURE(a_tilde_values, p99_vals):
 
     # ax.axvline(x=0.16, linestyle="--", color="orange")  # <-- ya no se usa
 
-    ax.scatter(a_tilde_values, p99_ana, label=r"Analytical ($M=100$)", color="red")
+    ax.scatter(a_tilde_values, p99_ana, label=rf"Analytical ($M={M}$)", color="red")
 
     ax.set_title(r"$P_{99}$ vs. $\tilde{b}$" "\n" r"Analytical vs. Simulation Comparison")
     ax.set_xlabel(r"$\tilde{a}$")
@@ -370,16 +370,16 @@ def RQ_12_13_FIGURE(a_tilde_values, p99_vals, M_convergence):
 
     # annotations
     c = 0.5; cy = 5
-    ax2.annotate(r"$M=10$", xy=(a_tilde_M10, 10),
+    ax2.annotate(r"$M=10$", xy=(a_tilde_M10, 10.5),
                 xytext=(a_tilde_M10 + c, 10 + cy + 4),
                 fontsize=12, arrowprops=dict(arrowstyle="->"))
 
-    ax2.annotate(r"$M=5$", xy=(a_tilde_M5, 5),
+    ax2.annotate(r"$M=5$", xy=(a_tilde_M5, 5.3),
                 xytext=(a_tilde_M5 + c, 5 + cy - 0.5),
                 fontsize=12, arrowprops=dict(arrowstyle="->"))
 
     ax2.annotate(r"$M=2$", xy=(a_tilde_M2, 2),
-                xytext=(a_tilde_M2 + c, 2 + cy - 3),
+                xytext=(a_tilde_M2 + c - 0.15, 2 + cy - 3.1),
                 fontsize=12, arrowprops=dict(arrowstyle="->"))
 
     ax2.set_title(
@@ -566,9 +566,9 @@ def RQ_141_142_FIGURE(a_tilde_values, p99_simVals, p99_aTilde_Vals):
     for i in range(len(a_tilde_iso)):
         ax.axvline(a_tilde_iso[i], color="k", alpha=0.4)
 
-    ax.set_title(r"$P_{99}(\tilde{a})$ vs. $\tilde{a}(a_i,\beta_i)$")
+    ax.set_title(r"$P_{99}(\tilde{b})$ vs. $\tilde{a}(a_i,\beta_i)$")
     ax.set_xlabel("(a) " + r"$\tilde{a}$")
-    ax.set_ylabel(r"$P_{99}(\tilde{a})$")
+    ax.set_ylabel(r"$P_{99}(\tilde{b})$")
     ax.set_xlim([0.0, 3.2])
     ax.legend(loc="upper right")
 
@@ -779,7 +779,7 @@ def RQ_22_FIGURE(M_values, time_vs_M):
 
 
 # ======= FIGURE 4) RQ 2.1 and RQ 2.2 Combined Figure ==============
-def RQ_21_22_FIGURE(res_sim, res_nys, res_ana, M_values, time_vs_M):
+def RQ_21_22_FIGURE(res_sim, res_nys, res_ana, M_values, M_value, time_vs_M):
     b_sim, g_sim, _, p99_sim, _ = res_sim
     b_ana, g_ana, p0_ana, p99_ana, _ = res_ana
     b_nys, g_nys, p0_nys, p99_nys, _ = res_nys
@@ -851,7 +851,7 @@ def RQ_21_22_FIGURE(res_sim, res_nys, res_ana, M_values, time_vs_M):
         Line2D([0], [0], color="k", lw=0.8, label=r"Empirical PDF (synthetic data)"),
         Line2D([0], [0], marker="o", markersize=8, linestyle="None",
             markerfacecolor="none", markeredgecolor="b",
-            label=r"Analytical (M=100)"),
+            label=rf"Analytical (M={M_value})"),
         Line2D([0], [0], marker="s", markersize=8, linestyle="None",
             markerfacecolor="g", markeredgecolor="g",
             label=r"Nystrom")
@@ -1104,7 +1104,7 @@ def RQ_33_FIGURE(a_tilde_values, p99_GL_c_vs_a, p99_ana_values, c_values):
         ax.plot(a_tilde_values,
                 p99_GL_c_vs_a[j, :],
                 color=colors[j],
-                label=fr"$P_{{99}}^{{GL,\,sim}}\,(a_1={c})$")
+                label=fr"$P_{{99}}^{{GL,\,sim}}\,(c={c})$")
 
     ax.plot(a_tilde_values, p99_ana_values,
             linestyle="--", linewidth=2, color="k",
@@ -1153,7 +1153,7 @@ def RQ_33_FIGURE(a_tilde_values, p99_GL_c_vs_a, p99_ana_values, c_values):
 # ======= FIGURE 6) RQ 4.1 - PDF and CDF comparison against real data ====================
 # --- Comparison between SL and GL simulation and  Neumann solution ---
 # ========================================================================================
-def RQ_411_FIGURE(b_grid, g_VKU, solutions_list):
+"""def RQ_411_FIGURE(b_grid, g_VKU, solutions_list):
     
     labels=("SL Simulation", "GL Simulation", "Neumann solution")
     colors=('r', "b", 'lightgreen')
@@ -1209,9 +1209,11 @@ def RQ_411_FIGURE(b_grid, g_VKU, solutions_list):
     # Save if a path is provided
     plt.savefig("Figures/RQ_4.1.1_figure.pdf", dpi=300, bbox_inches='tight')
 
-    return fig, ax_pdf
+    return fig, ax_pdf"""
 
-def RQ_412_FIGURE(b_grid, G_solutions, p99_values):    
+
+
+"""def RQ_412_FIGURE(b_grid, G_solutions, p99_values):    
     # --- G solutions ---
     G_VKU, G_SL_sim, G_GL_sim, G_ana = G_solutions
 
@@ -1333,21 +1335,11 @@ def RQ_412_FIGURE(b_grid, G_solutions, p99_values):
     plt.tight_layout()
 
     plt.savefig("Figures/RQ_4.1.2_figure.pdf", dpi=300, bbox_inches='tight')
-    return fig, ax_cdf
+    return fig, ax_cdf"""
 
 
 # ========== RQ 4.1 combined ========================
-def RQ_41_FIGURE(b_grid, g_VKU, solutions_list, G_solutions, p99_values, savepath="Figures/RQ_4.1_figure.pdf"):
-    """
-    Combina las gráficas de PDF y CDF en una sola figura con arreglo [1,2].
-    - b_grid: eje x
-    - g_VKU: datos reales PDF
-    - solutions_list: lista de soluciones para PDF
-    - G_solutions: (G_VKU, G_SL_sim, G_GL_sim, G_ana) para CDF
-    - p99_values: valores P99 para CDF
-    - savepath: ruta para guardar la figura
-    """
-
+"""def RQ_41_FIGURE(b_grid, g_VKU, solutions_list, G_solutions, p99_values, savepath="Figures/RQ_4.1_figure.pdf"):
     # --- Configuración general ---
     labels = ("SL Simulation", "GL Simulation", "Neumann solution")
     colors = ('r', "b", 'lightgreen')
@@ -1421,13 +1413,13 @@ def RQ_41_FIGURE(b_grid, g_VKU, solutions_list, G_solutions, p99_values, savepat
     plt.tight_layout()
     plt.savefig(savepath, dpi=300, bbox_inches='tight')
 
-    return fig, (ax_pdf, ax_cdf)
+    return fig, (ax_pdf, ax_cdf)"""
 
 
 # ======= FIGURE 6) RQ 4.2 - P99 curveF comparison against real data ====================
 # --- Comparison between SL and GL simulation and  Neumann solution ---
 # ========================================================================================
-def RQ_42_FIGURE(a_values, p99_VKU_curve, p99_SL_curve, p99_GL_curve, p99_ana_curve):
+"""def RQ_42_FIGURE(a_values, p99_VKU_curve, p99_SL_curve, p99_GL_curve, p99_ana_curve):
 
     fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
 
@@ -1483,5 +1475,5 @@ def RQ_42_FIGURE(a_values, p99_VKU_curve, p99_SL_curve, p99_GL_curve, p99_ana_cu
     plt.tight_layout()
 
     plt.savefig("Figures/RQ_4.2_figure.pdf", dpi=300, bbox_inches="tight")
-    plt.show()
+    plt.show()"""
 

@@ -72,7 +72,7 @@ def BESS_simulation(P_tilde:np.ndarray, dt:float, a_tilde:float, tau:float) -> t
 
 @njit
 def algorithmic_solution(a_tilde: float, beta: float, P: np.ndarray, dt:float, 
-                         grid: int) -> tuple[np.ndarray, np.ndarray, np.ndarray, float, float]:
+                         grid: int, q: float = 0.99) -> tuple[np.ndarray, np.ndarray, np.ndarray, float, float]:
     """ Computes the pdf "g(b)" of the BESS simulation an returns the main characteristics including the
     point mass "p0" (inactive battery) and the 99 percentile "p99". 
 
@@ -110,7 +110,7 @@ def algorithmic_solution(a_tilde: float, beta: float, P: np.ndarray, dt:float,
     g_sim, b_sim = histogram(B_pos, grid)
 
     p0_sim = count_less_than(BESS, 1e-6) / BESS.size
-    p99_sim = quantile(BESS, 0.99)
+    p99_sim = quantile(BESS, q)
 
     return BESS, b_sim, g_sim, p0_sim, p99_sim
 # =====================================================================
